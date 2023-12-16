@@ -31,6 +31,8 @@ services:
       MINIO_ROOT_USER: myuser
       MINIO_ROOT_PASSWORD: mypassword
     command: ["minio", "server", "--console-address", ":9090", "/data"]
+    healthcheck:
+      test: ["CMD", "curl", "-I", "http://localhost:9090/minio/health/live"]
 
 volumes:
   pg_data:
