@@ -28,13 +28,6 @@ model MenuItem {
   images      Image[]         // Relation to Image
 }
 
-model Ingredient {
-  id                Int                  @id @default(autoincrement())
-  name              String
-  description       String?
-  menuItemIngredient MenuItemIngredient[]
-}
-
 model MenuItemIngredient {
   menuItemID   Int
   ingredientID Int
@@ -44,6 +37,22 @@ model MenuItemIngredient {
   unit         String?
 
   @@id([menuItemID, ingredientID])
+}
+
+model Ingredient {
+  id                Int                  @id @default(autoincrement())
+  name              String
+  description       String?
+  menuItemIngredient MenuItemIngredient[]
+}
+
+model Image {
+  id          Int      @id @default(autoincrement())
+  menuItemID  Int
+  imageURL    String
+  title       String?
+  description String?
+  menuItem    MenuItem @relation(fields: [menuItemID], references: [id])
 }
 
 model User {
@@ -61,13 +70,4 @@ model Session {
   user       User     @relation(fields: [userID], references: [id])
   sessionStart DateTime
   sessionEnd   DateTime?
-}
-
-model Image {
-  id          Int      @id @default(autoincrement())
-  menuItemID  Int
-  imageURL    String
-  title       String?
-  description String?
-  menuItem    MenuItem @relation(fields: [menuItemID], references: [id])
 }
