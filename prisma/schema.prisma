@@ -12,7 +12,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Category {
+model CategoryTag {
   id          Int        @id @default(autoincrement())
   name        String
   description String?
@@ -20,14 +20,13 @@ model Category {
 }
 
 model MenuItem {
-  id          Int             @id @default(autoincrement())
+  id          Int                  @id @default(autoincrement())
   name        String
   description String?
   price       Float
-  categoryID  Int
-  category    Category        @relation(fields: [categoryID], references: [id])
+  category    CategoryTag[]
   ingredients MenuItemIngredient[]
-  images      Image[]         // Relation to Image
+  images      Image[]
 }
 
 model MenuItemIngredient {
@@ -42,34 +41,34 @@ model MenuItemIngredient {
 }
 
 model Ingredient {
-  id                Int                  @id @default(autoincrement())
-  name              String
-  description       String?
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  description        String?
   menuItemIngredient MenuItemIngredient[]
 }
 
 model Image {
   id          Int      @id @default(autoincrement())
-  menuItemID  Int
   imageURL    String
   title       String?
   description String?
+  menuItemID  Int
   menuItem    MenuItem @relation(fields: [menuItemID], references: [id])
 }
 
 model User {
-  id       Int         @id @default(autoincrement())
-  username String      @unique
+  id       Int       @id @default(autoincrement())
+  username String    @unique
   password String
-  email    String?     @unique
+  email    String?   @unique
   role     String
   sessions Session[]
 }
 
 model Session {
-  id         Int      @id @default(autoincrement())
-  userID     Int
-  user       User     @relation(fields: [userID], references: [id])
+  id           Int       @id @default(autoincrement())
+  userID       Int
+  user         User      @relation(fields: [userID], references: [id])
   sessionStart DateTime
   sessionEnd   DateTime?
 }
