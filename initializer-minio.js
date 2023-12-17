@@ -1,7 +1,7 @@
 import { Client as MinioClient } from "minio";
 import afs from "fs/promises";
 
-const rawJson = await afs.readFile("./schema.minio.json", {
+const rawJson = await afs.readFile("./initializer-buckets.json", {
     encoding: "utf8",
 });
 
@@ -30,6 +30,9 @@ const policy = JSON.stringify({
 });
 
 bucketList.forEach(async (bucketName) => {
-    await client.makeBucket(bucketName);
-    await client.setBucketPolicy(bucketName, policy);
+    try {
+        await client.makeBucket(bucketName);
+    } catch (e) {
+        console.error(e);
+    }
 });
