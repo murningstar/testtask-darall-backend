@@ -1,0 +1,25 @@
+FROM node:latest
+
+RUN mkdir /usr/initializer/
+
+RUN mkdir /usr/initializer/prisma
+
+WORKDIR /usr/initializer
+
+COPY package*.json .
+
+RUN npm install
+
+COPY ./prisma/schema.prisma ./prisma 
+
+COPY ./initializer-script.sh .
+
+COPY ./initializer-minio.js .
+
+COPY ./schema.minio.json .
+
+RUN chmod +x initializer-script.sh
+
+EXPOSE 9022
+
+CMD ["./initializer-script.sh"]

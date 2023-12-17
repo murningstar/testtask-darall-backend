@@ -34,6 +34,20 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-I", "http://localhost:9090/minio/health/live"]
 
+  # initializer:
+  #   image: initializer
+  #   ports:
+  #     - 9022:9022
+  #   depends_on:
+  #     pg:
+  #       condition: service_healthy
+  #   environment:
+  #     - DATABASE_URL=postgresql://myuser:mypassword@pg:5432/mydatabase
+  #   volumes:
+  #     - initializer_data:/usr/initializer
+
+
 volumes:
   pg_data:
   minio_data:
+  initializer_data:
